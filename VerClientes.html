@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <title>Ver Clientes </title>
+    <title>Ver Cliente</title>
 </head>
 <body>
-
     <!-- Barra de navegacion  -->
     <nav class="navbar bg-body-secondary" data-bs-theme="dark">
         <div class="container-fluid">
@@ -19,7 +18,7 @@
                   <a class="nav-link active" aria-current="page" href="VerClientes.html">Ver clientes</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="ListaClientes.html">Lista de Clientes</a>
+                  <a class="nav-link " href="ListaClientes.html">Lista de Clientes</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="RegistroClientes.html">Registro</a>
@@ -32,6 +31,135 @@
           </form>
         </div>
       </nav>
- 
+
+      <!-- Cuerpo de la pagina  -->
+      <div class="container mt-5">
+        <div class="container-custom">
+            <h1 class="mb-4">Perfil del Cliente</h1>
+            <form id="formularioCliente">
+                <div class="mb-3">
+                    <label for="nombreCompleto" class="form-label">Nombre Completo</label>
+                    <input type="text" class="form-control" id="nombreCompleto" name="nombreCompleto" disabled>
+                </div>
+                <div class="mb-3">
+                    <label for="dui" class="form-label">DUI</label>
+                    <input type="text" class="form-control" id="dui" name="dui" disabled>
+                </div>
+                <div class="mb-3">
+                    <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+                    <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" disabled>
+                </div>
+                <div class="mb-3">
+                    <label for="edad" class="form-label">Edad</label>
+                    <input type="number" class="form-control" id="edad" name="edad" disabled>
+                </div>
+                <div class="mb-3">
+                    <label for="direccion" class="form-label">Dirección</label>
+                    <input type="text" class="form-control" id="direccion" name="direccion" disabled>
+                </div>
+                <div class="mb-3">
+                    <label for="estadoFamiliar" class="form-label">Estado Familiar Beneficiario</label>
+                    <input type="text" class="form-control" id="estadoFamiliar" name="estadoFamiliar" disabled>
+                </div>
+                <button type="button" class="btn btn-primary" id="editarCliente">Editar</button>
+                <button type="button" class="btn btn-success" id="guardarCambios" style="display:none;">Guardar Cambios</button>
+                <button type="button" class="btn btn-danger" id="eliminarCliente">Eliminar</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Obtiene el nombre del cliente de la URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const nombreCompleto = urlParams.get('cliente');
+
+            // Obtiene los detalles del cliente del almacenamiento local
+            const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+            const cliente = clientes.find(cliente => cliente.nombreCompleto === nombreCompleto);
+
+            // Verifica si se encontró el cliente
+            if (cliente) {
+                // Muestra los detalles del cliente en los campos de texto
+                document.getElementById('nombreCompleto').value = cliente.nombreCompleto;
+                document.getElementById('dui').value = cliente.dui;
+                document.getElementById('fechaNacimiento').value = cliente.fechaNacimiento;
+                document.getElementById('edad').value = cliente.edad;
+                document.getElementById('direccion').value = cliente.direccion;
+                document.getElementById('estadoFamiliar').value = cliente.estadoFamiliar;
+            }
+
+            // Agrega event listeners para los botones
+            document.getElementById('editarCliente').addEventListener('click', function() {
+                // Habilita los campos de texto para edición
+                habilitarEdicion(true);
+            });
+
+            document.getElementById('guardarCambios').addEventListener('click', function() {
+                // Guarda los cambios en el cliente
+                guardarCambios();
+            });
+
+            document.getElementById('eliminarCliente').addEventListener('click', function() {
+                // Elimina el cliente
+                eliminarCliente();
+            });
+        });
+
+        function habilitarEdicion(habilitar) {
+            document.getElementById('nombreCompleto').disabled = !habilitar;
+            document.getElementById('dui').disabled = !habilitar;
+            document.getElementById('fechaNacimiento').disabled = !habilitar;
+            document.getElementById('edad').disabled = !habilitar;
+            document.getElementById('direccion').disabled = !habilitar;
+            document.getElementById('estadoFamiliar').disabled = !habilitar;
+
+            // Muestra u oculta el botón de guardar cambios
+            document.getElementById('guardarCambios').style.display = habilitar ? 'inline-block' : 'none';
+        }
+
+        function guardarCambios() {
+            // Obtiene los detalles del cliente del almacenamiento local
+            const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+            const nombreCompleto = document.getElementById('nombreCompleto').value;
+
+            // Encuentra el índice del cliente a actualizar
+            const indiceCliente = clientes.findIndex(cliente => cliente.nombreCompleto === nombreCompleto);
+
+            // Actualiza los detalles del cliente con los nuevos valores
+            clientes[indiceCliente] = {
+                nombreCompleto: document.getElementById('nombreCompleto').value,
+                dui: document.getElementById('dui').value,
+                fechaNacimiento: document.getElementById('fechaNacimiento').value,
+                edad: document.getElementById('edad').value,
+                direccion: document.getElementById('direccion').value,
+                estadoFamiliar: document.getElementById('estadoFamiliar').value
+            };
+
+            // Guarda los clientes actualizados en el almacenamiento local
+            localStorage.setItem('clientes', JSON.stringify(clientes));
+
+            // Deshabilita la edición
+            habilitarEdicion(false);
+        }
+
+        function eliminarCliente() {
+            // Obtiene los detalles del cliente del almacenamiento local
+            const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+            const nombreCompleto = document.getElementById('nombreCompleto').value;
+
+            // Encuentra el índice del cliente a eliminar
+            const indiceCliente = clientes.findIndex(cliente => cliente.nombreCompleto === nombreCompleto);
+
+            // Elimina el cliente del array
+            clientes.splice(indiceCliente, 1);
+
+            // Guarda los clientes actualizados en el almacenamiento local
+            localStorage.setItem('clientes', JSON.stringify(clientes));
+
+            // Redirige a la página de ListaClientes.html después de eliminar el cliente
+            window.location.href = "ListaClientes.html";
+        }
+    </script>
 </body>
 </html>

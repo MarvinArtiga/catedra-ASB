@@ -65,53 +65,15 @@
                 // Si hay clientes, itera sobre ellos y los muestra en la tabla
                 clientes.forEach(function(cliente) {
                     const row = document.createElement('tr');
-                    row.innerHTML = `<td>${cliente.nombreCompleto}</td><td>${cliente.dui}</td><td><button class="btn btn-danger btn-sm" onclick="eliminarCliente('${cliente.nombreCompleto}')">Eliminar</button></td>`;
+                    row.innerHTML = `<td>${cliente.nombreCompleto}</td><td>${cliente.dui}</td><td><button class="btn btn-primary btn-sm" onclick="verPerfil('${cliente.nombreCompleto}')">Ver Perfil</button></td>`;
                     clientesTableBody.appendChild(row);
                 });
             }
         });
 
-        function eliminarCliente(nombreCompleto) {
-            // Obtiene los clientes del almacenamiento local
-            let clientes = JSON.parse(localStorage.getItem('clientes')) || [];
-
-            // Encuentra el índice del cliente a eliminar
-            const indiceCliente = clientes.findIndex(cliente => cliente.nombreCompleto === nombreCompleto);
-
-            // Elimina el cliente del array
-            clientes.splice(indiceCliente, 1);
-
-            // Guarda los clientes actualizados en el almacenamiento local
-            localStorage.setItem('clientes', JSON.stringify(clientes));
-
-            // Actualiza la tabla de clientes en la página
-            actualizarTablaClientes();
-
-            alert(`Cliente "${nombreCompleto}" eliminado exitosamente`);
-        }
-
-        function actualizarTablaClientes() {
-            // Obtiene el cuerpo de la tabla donde mostrar los clientes
-            const clientesTableBody = document.getElementById('clientesTableBody');
-
-            // Borra todos los registros actuales de la tabla
-            clientesTableBody.innerHTML = "";
-
-            // Obtiene los clientes del almacenamiento local
-            let clientes = JSON.parse(localStorage.getItem('clientes')) || [];
-
-            // Verifica si hay clientes para mostrar
-            if (clientes.length === 0) {
-                // Si no hay clientes, muestra un mensaje indicando que no hay clientes registrados
-                clientesTableBody.innerHTML = "<tr><td colspan='3'>No hay clientes registrados</td></tr>";
-            } else {
-                // Si hay clientes, itera sobre ellos y los muestra en la tabla
-                clientes.forEach(function(cliente) {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `<td>${cliente.nombreCompleto}</td><td>${cliente.dui}</td><td><button class="btn btn-danger btn-sm" onclick="eliminarCliente('${cliente.nombreCompleto}')">Eliminar</button></td>`;
-                    clientesTableBody.appendChild(row);
-                });
-            }
+        function verPerfil(nombreCompleto) {
+            // Redirige al usuario al perfil correspondiente en VerClientes.html
+            window.location.href = `VerClientes.html?cliente=${encodeURIComponent(nombreCompleto)}`;
         }
     </script>
 </body>
