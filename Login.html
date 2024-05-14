@@ -1,11 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página de inicio de sesión</title>
+<link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
-    
+
+<div class="container">
+  <div class="left">
+  </div>
+  <div class="right">
+    <h2 class="li">Cooperativa
+        FONAVIT
+    </h2>
+    <br>
+    <h3>INICIAR SESIÓN</h3>
+    <hr>
+    <br>
+    <br>
+    <div class="form-control">
+      <input type="text" id="username" placeholder="Usuario">
+    </div>
+    <div class="form-control">
+      <input type="password" id="password" placeholder="Contraseña">
+    </div>
+    <div>
+      <button onclick="login();">Iniciar sesión</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/script.js"></script>
+
 </body>
 </html>
